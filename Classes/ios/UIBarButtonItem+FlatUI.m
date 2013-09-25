@@ -9,6 +9,13 @@
 #import "UIBarButtonItem+FlatUI.h"
 #import "UIImage+FlatUI.h"
 
+
+#define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
+#define SYSTEM_VERSION_GREATER_THAN(v)              ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)
+#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+#define SYSTEM_VERSION_LESS_THAN(v)                 ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
+#define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
+
 @implementation UIBarButtonItem (FlatUI)
 
 - (void) configureFlatButtonWithColor:(UIColor *)color
@@ -66,39 +73,42 @@
        forFlatButtonWithColor:(UIColor *)color
              highlightedColor:(UIColor *)highlightedColor
                  cornerRadius:(CGFloat) cornerRadius {
-  UIImage *backButtonPortraitImage = [UIImage backButtonImageWithColor:color
-                                                            barMetrics:UIBarMetricsDefault
-                                                          cornerRadius:cornerRadius];
-  UIImage *highlightedBackButtonPortraitImage = [UIImage backButtonImageWithColor:highlightedColor
-                                                                       barMetrics:UIBarMetricsDefault
-                                                                     cornerRadius:cornerRadius];
-  UIImage *backButtonLandscapeImage = [UIImage backButtonImageWithColor:color
-                                                             barMetrics:UIBarMetricsLandscapePhone
-                                                           cornerRadius:2];
-  UIImage *highlightedBackButtonLandscapeImage = [UIImage backButtonImageWithColor:highlightedColor
-                                                                        barMetrics:UIBarMetricsLandscapePhone
-                                                                      cornerRadius:2];
   
-  [appearance setBackButtonBackgroundImage:backButtonPortraitImage
-                                  forState:UIControlStateNormal
-                                barMetrics:UIBarMetricsDefault];
-  [appearance setBackButtonBackgroundImage:backButtonLandscapeImage
-                                  forState:UIControlStateNormal
-                                barMetrics:UIBarMetricsLandscapePhone];
-  [appearance setBackButtonBackgroundImage:highlightedBackButtonPortraitImage
-                                  forState:UIControlStateHighlighted
-                                barMetrics:UIBarMetricsDefault];
-  [appearance setBackButtonBackgroundImage:highlightedBackButtonLandscapeImage
-                                  forState:UIControlStateHighlighted
-                                barMetrics:UIBarMetricsLandscapePhone];
-  
-  [appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(1.0f, 1.0f) forBarMetrics:UIBarMetricsDefault];
-  [appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(1.0f, 1.0f) forBarMetrics:UIBarMetricsLandscapePhone];
-  
-  UIImage *buttonImageNormal       = [UIImage imageWithColor:color cornerRadius:cornerRadius];
-  UIImage *buttonImageHightlighted = [UIImage imageWithColor:highlightedColor cornerRadius:cornerRadius];
-  [appearance setBackgroundImage:buttonImageNormal forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-  [appearance setBackgroundImage:buttonImageHightlighted forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
+    if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
+      UIImage *backButtonPortraitImage = [UIImage backButtonImageWithColor:color
+                                                                barMetrics:UIBarMetricsDefault
+                                                              cornerRadius:cornerRadius];
+      UIImage *highlightedBackButtonPortraitImage = [UIImage backButtonImageWithColor:highlightedColor
+                                                                           barMetrics:UIBarMetricsDefault
+                                                                         cornerRadius:cornerRadius];
+      UIImage *backButtonLandscapeImage = [UIImage backButtonImageWithColor:color
+                                                                 barMetrics:UIBarMetricsLandscapePhone
+                                                               cornerRadius:2];
+      UIImage *highlightedBackButtonLandscapeImage = [UIImage backButtonImageWithColor:highlightedColor
+                                                                            barMetrics:UIBarMetricsLandscapePhone
+                                                                          cornerRadius:2];
+      
+      [appearance setBackButtonBackgroundImage:backButtonPortraitImage
+                                      forState:UIControlStateNormal
+                                    barMetrics:UIBarMetricsDefault];
+      [appearance setBackButtonBackgroundImage:backButtonLandscapeImage
+                                      forState:UIControlStateNormal
+                                    barMetrics:UIBarMetricsLandscapePhone];
+      [appearance setBackButtonBackgroundImage:highlightedBackButtonPortraitImage
+                                      forState:UIControlStateHighlighted
+                                    barMetrics:UIBarMetricsDefault];
+      [appearance setBackButtonBackgroundImage:highlightedBackButtonLandscapeImage
+                                      forState:UIControlStateHighlighted
+                                    barMetrics:UIBarMetricsLandscapePhone];
+      
+      [appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(1.0f, 1.0f) forBarMetrics:UIBarMetricsDefault];
+      [appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(1.0f, 1.0f) forBarMetrics:UIBarMetricsLandscapePhone];
+      
+      UIImage *buttonImageNormal       = [UIImage imageWithColor:color cornerRadius:cornerRadius];
+      UIImage *buttonImageHightlighted = [UIImage imageWithColor:highlightedColor cornerRadius:cornerRadius];
+      [appearance setBackgroundImage:buttonImageNormal forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+      [appearance setBackgroundImage:buttonImageHightlighted forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
+    }
 }
 
 @end
